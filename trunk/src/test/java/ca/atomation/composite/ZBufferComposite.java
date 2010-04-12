@@ -29,20 +29,24 @@ public class ZBufferComposite {
 				g2d.setComposite(composite);
 				
 				g2d.setColor(Color.red);
-				composite.setValueResolver(new ZValueResolver() {
-					public float resolve(int x, int y) {
-						return (float)Math.random();
-					}
-				});
-				g2d.fillOval(10, 10, 100, 100);
+				composite.setValueResolver(new ZPlaneResolver(0, 100, 100, 0, 50, 100, 100, 0, 0));
+				g2d.fillPolygon(
+						new int[] {
+							0, 100, 100, 0
+						}, 
+						new int[] {
+							0, 50, 100, 50	
+						}, 4);
 				
 				g2d.setColor(Color.yellow);
-				composite.setValueResolver(new ZValueResolver() {
-					public float resolve(int x, int y) {
-						return (float)Math.random();
-					}
-				});
-				g2d.fillOval(50, 50, 150, 150);
+				composite.setValueResolver(new ZPlaneResolver(0, 100, 100, 50, 0, 50, 0, 100, 100));
+				g2d.fillPolygon(
+						new int[] {
+							0, 100, 100, 0
+						}, 
+						new int[] {
+							50, 0, 50, 100	
+						}, 4);
 			}
 		};
 		

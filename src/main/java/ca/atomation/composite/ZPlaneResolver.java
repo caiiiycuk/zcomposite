@@ -9,7 +9,7 @@ import ca.atomation.composite.math.PlaneUtils;
  */
 public class ZPlaneResolver implements ZValueResolver {
 
-	protected float[] plane;
+	protected double[] plane;
 	
 	/**
 	 * Create {@link ZValueResolver} based on plane (3 points defenitaion)
@@ -23,7 +23,7 @@ public class ZPlaneResolver implements ZValueResolver {
 	 * @param z2 coordinate
 	 * @param z3 coordinate
 	 */
-	public ZPlaneResolver(float x1, float x2, float x3, float y1, float y2, float y3, float z1, float z2, float z3) {
+	public ZPlaneResolver(double x1, double x2, double x3, double y1, double y2, double y3, double z1, double z2, double z3) {
 		this(PlaneUtils.plane(x1, x2, x3, y1, y2, y3, z1, z2, z3));
 	}
 	
@@ -31,7 +31,7 @@ public class ZPlaneResolver implements ZValueResolver {
 	 * Create {@link ZValueResolver} based on plane
 	 * @param plane Ax + By + Cz + D = 0 => A = plane[0], B = plane[1], C = plane[2], D = plane[3]
 	 */
-	public ZPlaneResolver(float[] plane) {
+	public ZPlaneResolver(double[] plane) {
 		setPlane(plane);
 	}
 	
@@ -40,7 +40,7 @@ public class ZPlaneResolver implements ZValueResolver {
 	 * Set new plane to work with
 	 * @param plane Ax + By + Cz + D = 0 => A = plane[0], B = plane[1], C = plane[2], D = plane[3]
 	 */
-	public void setPlane(float[] plane) {
+	public void setPlane(double[] plane) {
 		if (plane.length != 4) {
 			throw new IllegalArgumentException("");
 		}
@@ -51,7 +51,7 @@ public class ZPlaneResolver implements ZValueResolver {
 	/**
 	 * {@inheritDoc}
 	 */
-	public float resolve(int x, int y) {
+	public double resolve(double x, double y) {
 		return PlaneUtils.z(x, y, plane);
 	}
 

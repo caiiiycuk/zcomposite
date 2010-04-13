@@ -12,14 +12,14 @@ import java.util.Arrays;
  */
 public class ZComposite implements Composite {
 
-	protected float[][] buffer;
+	protected double[][] buffer;
 	protected int width;
 	protected int height;
 	
 	protected ZValueResolver valueResolver;
 	
 	public ZComposite(int width, int height) {
-		buffer = new float[height][width];
+		buffer = new double[height][width];
 		
 		this.width = width;
 		this.height = height;
@@ -40,7 +40,7 @@ public class ZComposite implements Composite {
 	 */
 	public void clearBufferBit() {
 		for (int y=0; y<height; y++) {
-			Arrays.fill(buffer[y], Float.MAX_VALUE);
+			Arrays.fill(buffer[y], Double.MAX_VALUE);
 		}
 	}
 	
@@ -50,7 +50,7 @@ public class ZComposite implements Composite {
 	 * @param y coordinate
 	 * @param value z-value
 	 */
-	public void setZOf(int x, int y, float value) {
+	public void setZOf(int x, int y, double value) {
 		if (x >= width || x < 0 ||
 			y >= height || y < 0) {
 			throw new IllegalArgumentException("Point [" + x + ", " + y + "] is outside of the Z Buffer array");
@@ -63,7 +63,7 @@ public class ZComposite implements Composite {
 	 * Get Z Buffer values in array
 	 * @return values in array
 	 */
-	public float[][] getBuffer() {
+	public double[][] getBuffer() {
 		return buffer;
 	}
 	
@@ -83,7 +83,7 @@ public class ZComposite implements Composite {
 		return valueResolver;
 	}
 
-	public float getZOf(int realX, int realY) {
+	public double getZOf(int realX, int realY) {
 		return buffer[realY][realX];
 	}
 	

@@ -12,6 +12,6 @@ public interface ZValueResolver {
 	 * @param y given y coordinate
 	 * @return z coordinate of x, y
 	 */
-	float resolve(int x, int y);
+	double resolve(double x, double y);
 	
 }

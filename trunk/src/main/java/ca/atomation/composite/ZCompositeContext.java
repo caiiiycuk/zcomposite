@@ -33,19 +33,32 @@ public class ZCompositeContext implements CompositeContext {
 
 		for (int y = dstOut.getMinY(); y < maxY; y++) {
 			for (int x = dstOut.getMinX(); x < maxX; x++) {
-				int realX = -dstOut.getSampleModelTranslateX() + x;
-				int realY = -dstOut.getSampleModelTranslateY() + y;
+				int dstOutX = -dstOut.getSampleModelTranslateX() + x;
+				int dstOutY = -dstOut.getSampleModelTranslateY() + y;
+				int dstInX = -dstIn.getSampleModelTranslateX() + x;
+				int dstInY = -dstIn.getSampleModelTranslateY() + y;
+//				int srcInX = -src.getSampleModelTranslateX() + x;
+//				int srcInY = -src.getSampleModelTranslateY() + y;
 				
-				float dstZ = zComposite.getZOf(realX, realY);
-				float srcZ = zComposite.getValueResolver().resolve(realX, realY);
+				double dstZ = zComposite.getZOf(dstInX, dstInY);
+				double srcZ = zComposite.getValueResolver().resolve(dstOutX, dstOutY);
 				
-				if (srcZ <= dstZ) {
-					zComposite.setZOf(realX, realY, srcZ);
-					
+				if (srcZ < dstZ) {
+					zComposite.setZOf(dstOutX, dstOutY, srcZ);
+					dstOut.setSample(x, y, R_BAND, src.getSample(x, y, R_BAND)); //R
+					dstOut.setSample(x, y, G_BAND, src.getSample(x, y, G_BAND)); //G
+					dstOut.setSample(x, y, B_BAND, src.getSample(x, y, B_BAND)); //B
+				} else if (srcZ == dstZ) {
 					dstOut.setSample(x, y, R_BAND, src.getSample(x, y, R_BAND)); //R
 					dstOut.setSample(x, y, G_BAND, src.getSample(x, y, G_BAND)); //G
 					dstOut.setSample(x, y, B_BAND, src.getSample(x, y, B_BAND)); //B
 				} else {
+					dstOut.setSample(x, y, R_BAND, dstIn.getSample(x, y, R_BAND)); //R
+					dstOut.setSample(x, y, G_BAND, dstIn.getSample(x, y, G_BAND)); //G
+					dstOut.setSample(x, y, B_BAND, dstIn.getSample(x, y, B_BAND)); //B
+//					dstOut.setSample(x, y, R_BAND, 255); //R
+//					dstOut.setSample(x, y, G_BAND, 0); //G
+//					dstOut.setSample(x, y, B_BAND, 0); //B
 				}
 			}
 		}

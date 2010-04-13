@@ -24,10 +24,10 @@ public class PlaneUtils {
 	 * @param z3
 	 * @return уравнение: Ax + By + Cz + D = 0
 	 */
-	public static float[] plane(float x1, float x2, float x3,
-					float y1, float y2, float y3,
-					float z1, float z2, float z3) {
-		float[] plane = new float[4];
+	public static double[] plane(double x1, double x2, double x3,
+			double y1, double y2, double y3,
+			double z1, double z2, double z3) {
+		double[] plane = new double[4];
 		
 		//A
 		plane[0] = y1*(z2 -z3) + y2*(z3 -z1) + y3*(z1 -z2);
@@ -51,7 +51,7 @@ public class PlaneUtils {
 	 * @param plane уравнение: Ax + By + Cz + D = 0
 	 * @return z-координата (z = -(Ax + By + D) / C
 	 */
-	public static float z(float x, float y, float[] plane) {
+	public static double z(double x, double y, double[] plane) {
 		return - (plane[0] * x + plane[1] * y + plane[3]) / plane[2];
 	}
 	

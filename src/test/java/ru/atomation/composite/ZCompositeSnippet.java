@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import ru.atomation.composite.misc.ZCompositeUtils;
+import ru.atomation.composite.misc.ZValueResolverFactory;
 
 /**
  * Shows how to use zbuffer composite
@@ -34,7 +34,7 @@ public class ZCompositeSnippet {
 				
 				Graphics2D g2d = (Graphics2D) g;
 				ZComposite composite = new ZComposite(640, 480);
-				composite.setAntialiasingEnabled(true);
+				composite.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				g2d.setComposite(composite);
 				
@@ -46,7 +46,7 @@ public class ZCompositeSnippet {
 					0, 50, 100, 50
 				};
 				
-				composite.setValueResolver(ZCompositeUtils.zForPolygonResolver(xpoints, ypoints, 100, 0, 0));
+				composite.setValueResolver(ZValueResolverFactory.createPolygonResolver(xpoints, ypoints, 100, 0, 0));
 				
 				g2d.setColor(Color.red);
 				g2d.fillPolygon(xpoints, ypoints, xpoints.length);
@@ -62,7 +62,7 @@ public class ZCompositeSnippet {
 					50, 0, 50, 100
 				};
 				
-				composite.setValueResolver(ZCompositeUtils.zForPolygonResolver(xpoints, ypoints, 0, 100, 100));
+				composite.setValueResolver(ZValueResolverFactory.createPolygonResolver(xpoints, ypoints, 0, 100, 100));
 
 				g2d.setColor(Color.yellow);
 				g2d.fillPolygon(xpoints, ypoints, xpoints.length);

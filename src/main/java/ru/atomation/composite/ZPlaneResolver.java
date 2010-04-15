@@ -1,6 +1,6 @@
 package ru.atomation.composite;
 
-import ru.atomation.composite.misc.ZCompositeUtils;
+import ru.atomation.composite.misc.ZValueResolverFactory;
 
 /**
  * Resolve z-value based on plane {@link ZValueResolver}
@@ -25,7 +25,7 @@ public class ZPlaneResolver implements ZValueResolver {
 	 * @param z3 coordinate
 	 */
 	public ZPlaneResolver(double x1, double x2, double x3, double y1, double y2, double y3, double z1, double z2, double z3) {
-		this(ZCompositeUtils.plane(x1, x2, x3, y1, y2, y3, z1, z2, z3));
+		this(ZValueResolverFactory.createPlane(x1, x2, x3, y1, y2, y3, z1, z2, z3));
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class ZPlaneResolver implements ZValueResolver {
 	 * {@inheritDoc}
 	 */
 	public double resolve(double x, double y) {
-		return ZCompositeUtils.z(x, y, plane);
+		return ZValueResolverFactory.resolveZ(x, y, plane);
 	}
 
 	/**

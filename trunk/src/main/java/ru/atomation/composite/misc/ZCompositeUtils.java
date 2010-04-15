@@ -1,11 +1,11 @@
-package ca.atomation.composite.math;
+package ru.atomation.composite.misc;
 
 /**
  * Utils class, for work with planes
  * @author caiiiycuk
  *
  */
-public class PlaneUtils {
+public class ZCompositeUtils {
 
 	/**
 	 * Получить уравнение плоскости по трем точкам, уравнение для рассчета

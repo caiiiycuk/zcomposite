@@ -1,5 +1,10 @@
 package ru.atomation.composite.misc;
 
+import java.awt.geom.GeneralPath;
+
+import ru.atomation.composite.ZPlaneResolver;
+import ru.atomation.composite.ZValueResolver;
+
 /**
  * Utils class, for work with planes
  * @author caiiiycuk
@@ -55,4 +60,46 @@ public class ZCompositeUtils {
 		return - (plane[0] * x + plane[1] * y + plane[3]) / plane[2];
 	}
 	
+	/**
+	 * Create a {@link ZValueResolver} for given polygon
+	 * and three z coordinates 
+	 * @param xpoints 
+	 * @param ypoints
+	 * @param z1 z-coordinate for point[0,0]
+	 * @param z2 z-coordinate for point[1,1]
+	 * @param z3 z-coordinate for point[2,2]
+	 * @return
+	 */
+	public static ZValueResolver zForPolygonResolver(final int[] xpoints, final int[] ypoints, double z1, double z2, double z3) {
+		if (xpoints.length < 3) {
+			throw new IllegalArgumentException("Polygon must have >2 points");
+		}
+		
+		return new ZPlaneResolver(
+				xpoints[0], xpoints[1], xpoints[2], 
+				ypoints[0], ypoints[1], ypoints[2],
+				z1, z2, z3) {
+
+			protected GeneralPath generalPath;
+			
+			{
+				generalPath = new GeneralPath();
+				generalPath.moveTo(xpoints[0], ypoints[0]);
+				for (int i=1; i<xpoints.length; i++) {
+					generalPath.lineTo(xpoints[i], ypoints[i]);
+				}
+				generalPath.closePath();
+			}
+			
+			public double resolve(double x, double y) {
+				if (isAntialiasingEnabled()) {
+					if (!generalPath.contains(x, y)){
+						return Double.MAX_VALUE;		
+					}
+				}
+				
+				return super.resolve(x, y);
+			};
+		};
+	}
 }

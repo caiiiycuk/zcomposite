@@ -17,10 +17,12 @@ public class ZComposite implements Composite {
 	protected int height;
 	
 	protected ZValueResolver valueResolver;
+	protected boolean antialiasingEnabled;
 	
 	public ZComposite(int width, int height) {
 		buffer = new double[height][width];
-		
+
+		this.antialiasingEnabled = false;
 		this.width = width;
 		this.height = height;
 		
@@ -73,6 +75,7 @@ public class ZComposite implements Composite {
 	 */
 	public void setValueResolver(ZValueResolver valueResolver) {
 		this.valueResolver = valueResolver;
+		this.valueResolver.setAntialiasingEnabled(antialiasingEnabled);
 	}
 	
 	/**
@@ -85,6 +88,20 @@ public class ZComposite implements Composite {
 
 	public double getZOf(int realX, int realY) {
 		return buffer[realY][realX];
+	}
+
+	/**
+	 * @return is Antialiasing Enabled 
+	 */
+	public boolean isAntialiasingEnabled() {
+		return antialiasingEnabled;
+	}
+	
+	/**
+	 * @param isEnabled enable or disable antialias
+	 */
+	void setAntialiasingEnabled(boolean isEnabled) {
+		this.antialiasingEnabled = isEnabled;
 	}
 	
 }

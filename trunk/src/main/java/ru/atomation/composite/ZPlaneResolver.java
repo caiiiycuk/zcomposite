@@ -10,6 +10,7 @@ import ru.atomation.composite.misc.ZCompositeUtils;
 public class ZPlaneResolver implements ZValueResolver {
 
 	protected double[] plane;
+	protected boolean antialiasingEnabled;
 	
 	/**
 	 * Create {@link ZValueResolver} based on plane (3 points defenitaion)
@@ -53,6 +54,20 @@ public class ZPlaneResolver implements ZValueResolver {
 	 */
 	public double resolve(double x, double y) {
 		return ZCompositeUtils.z(x, y, plane);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isAntialiasingEnabled() {
+		return antialiasingEnabled;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setAntialiasingEnabled(boolean isEnabled) {
+		antialiasingEnabled = isEnabled;
 	}
 
 }

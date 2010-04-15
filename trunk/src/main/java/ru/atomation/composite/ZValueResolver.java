@@ -14,4 +14,14 @@ public interface ZValueResolver {
 	 */
 	double resolve(double x, double y);
 	
+	/**
+	 * @return is Antialiasing Enabled
+	 */
+	boolean isAntialiasingEnabled();
+
+	/**
+	 * @param isEnabled enable or disable antialias
+	 */
+	void setAntialiasingEnabled(boolean isEnabled);
+	
 }

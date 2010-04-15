@@ -23,36 +23,35 @@ public class ZValueResolverFactory {
 	 * @return
 	 */
 	public static ZValueResolver createPolygonResolver(final int[] xpoints, final int[] ypoints, double z1, double z2, double z3) {
+		GeneralPath generalPath = createClippingShape(xpoints, ypoints);
+		
+		ZPlaneResolver resolver = new ZPlaneResolver(
+				xpoints[0], xpoints[1], xpoints[2], 
+				ypoints[0], ypoints[1], ypoints[2],
+				z1, z2, z3);
+		resolver.setClippingShape(generalPath);
+		
+		return resolver;
+	}
+
+	/**
+	 * Create polygon clipping shape
+	 * @param xpoints
+	 * @param ypoints
+	 * @return
+	 */
+	public static GeneralPath createClippingShape(final int[] xpoints,	final int[] ypoints) {
 		if (xpoints.length < 3) {
 			throw new IllegalArgumentException("Polygon must have >2 points");
 		}
 		
-		return new ZPlaneResolver(
-				xpoints[0], xpoints[1], xpoints[2], 
-				ypoints[0], ypoints[1], ypoints[2],
-				z1, z2, z3) {
-
-			protected GeneralPath generalPath;
-			
-			{
-				generalPath = new GeneralPath();
-				generalPath.moveTo(xpoints[0], ypoints[0]);
-				for (int i=1; i<xpoints.length; i++) {
-					generalPath.lineTo(xpoints[i], ypoints[i]);
-				}
-				generalPath.closePath();
-			}
-			
-			public double resolve(double x, double y) {
-				if (isAntialiasingEnabled()) {
-					if (!generalPath.contains(x, y)){
-						return Double.MAX_VALUE;		
-					}
-				}
-				
-				return super.resolve(x, y);
-			};
-		};
+		GeneralPath generalPath = new GeneralPath();
+		generalPath.moveTo(xpoints[0], ypoints[0]);
+		for (int i=1; i<xpoints.length; i++) {
+			generalPath.lineTo(xpoints[i], ypoints[i]);
+		}
+		generalPath.closePath();
+		return generalPath;
 	}
 
 //--

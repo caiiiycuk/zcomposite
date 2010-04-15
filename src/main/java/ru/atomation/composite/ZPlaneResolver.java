@@ -1,5 +1,7 @@
 package ru.atomation.composite;
 
+import java.awt.Shape;
+
 import ru.atomation.composite.misc.ZValueResolverFactory;
 
 /**
@@ -11,6 +13,7 @@ public class ZPlaneResolver implements ZValueResolver {
 
 	protected double[] plane;
 	protected boolean antialiasingEnabled;
+	protected Shape clippingShape;
 	
 	/**
 	 * Create {@link ZValueResolver} based on plane (3 points defenitaion)
@@ -53,9 +56,31 @@ public class ZPlaneResolver implements ZValueResolver {
 	 * {@inheritDoc}
 	 */
 	public double resolve(double x, double y) {
+		if (isAntialiasingEnabled() && isNotInBounds(x, y)) {
+				return Double.MAX_VALUE;
+		}
+		
 		return ZValueResolverFactory.resolveZ(x, y, plane);
 	}
 
+	/**
+	 * Is point outside clipping bounds
+	 * @param x coordinate
+	 * @param y coordinate
+	 * @return
+	 */
+	protected boolean isNotInBounds(double x, double y) {
+		if (clippingShape == null) {
+			throw new IllegalStateException("For antialiasing you must set clipping shape");
+		}
+		
+		if (clippingShape.contains(x, y)) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -68,6 +93,13 @@ public class ZPlaneResolver implements ZValueResolver {
 	 */
 	public void setAntialiasingEnabled(boolean isEnabled) {
 		antialiasingEnabled = isEnabled;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setClippingShape(Shape shape) {
+		this.clippingShape = shape;
 	}
 
 }

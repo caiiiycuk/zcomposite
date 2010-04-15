@@ -3,6 +3,7 @@ package ru.atomation.composite;
 import java.awt.Composite;
 import java.awt.CompositeContext;
 import java.awt.RenderingHints;
+import java.awt.RenderingHints.Key;
 import java.awt.image.ColorModel;
 import java.util.Arrays;
 
@@ -98,10 +99,14 @@ public class ZComposite implements Composite {
 	}
 	
 	/**
-	 * @param isEnabled enable or disable antialias
+	 * {@link RenderingHints}
+	 * @param key
+	 * @param value
 	 */
-	void setAntialiasingEnabled(boolean isEnabled) {
-		this.antialiasingEnabled = isEnabled;
+	public void setRenderingHint(Key key, Object value) {
+		if (RenderingHints.KEY_ANTIALIASING.equals(key)) {
+			this.antialiasingEnabled = RenderingHints.VALUE_ANTIALIAS_ON.equals(value);
+		}
 	}
 	
 }

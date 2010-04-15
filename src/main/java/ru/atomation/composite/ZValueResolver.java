@@ -1,4 +1,4 @@
-package ca.atomation.composite;
+package ru.atomation.composite;
 
 /**
  * Converts given x, y coordinate to z coordinate

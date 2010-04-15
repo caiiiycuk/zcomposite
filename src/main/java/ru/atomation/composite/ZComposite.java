@@ -1,4 +1,4 @@
-package ca.atomation.composite;
+package ru.atomation.composite;
 
 import java.awt.Composite;
 import java.awt.CompositeContext;

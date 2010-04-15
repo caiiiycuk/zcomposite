@@ -1,4 +1,4 @@
-package ca.atomation.composite;
+package ru.atomation.composite;
 
 import java.awt.CompositeContext;
 import java.awt.image.Raster;
@@ -30,21 +30,17 @@ public class ZCompositeContext implements CompositeContext {
 		
 		int maxX = dstOut.getMinX() + dstOut.getWidth();
 		int maxY = dstOut.getMinY() + dstOut.getHeight();
-
+		
 		for (int y = dstOut.getMinY(); y < maxY; y++) {
 			for (int x = dstOut.getMinX(); x < maxX; x++) {
-				int dstOutX = -dstOut.getSampleModelTranslateX() + x;
-				int dstOutY = -dstOut.getSampleModelTranslateY() + y;
 				int dstInX = -dstIn.getSampleModelTranslateX() + x;
 				int dstInY = -dstIn.getSampleModelTranslateY() + y;
-//				int srcInX = -src.getSampleModelTranslateX() + x;
-//				int srcInY = -src.getSampleModelTranslateY() + y;
 				
 				double dstZ = zComposite.getZOf(dstInX, dstInY);
-				double srcZ = zComposite.getValueResolver().resolve(dstOutX, dstOutY);
-				
+				double srcZ = zComposite.getValueResolver().resolve(dstInX, dstInY);
+
 				if (srcZ < dstZ) {
-					zComposite.setZOf(dstOutX, dstOutY, srcZ);
+					zComposite.setZOf(dstInX, dstInY, srcZ);
 					dstOut.setSample(x, y, R_BAND, src.getSample(x, y, R_BAND)); //R
 					dstOut.setSample(x, y, G_BAND, src.getSample(x, y, G_BAND)); //G
 					dstOut.setSample(x, y, B_BAND, src.getSample(x, y, B_BAND)); //B
@@ -56,9 +52,6 @@ public class ZCompositeContext implements CompositeContext {
 					dstOut.setSample(x, y, R_BAND, dstIn.getSample(x, y, R_BAND)); //R
 					dstOut.setSample(x, y, G_BAND, dstIn.getSample(x, y, G_BAND)); //G
 					dstOut.setSample(x, y, B_BAND, dstIn.getSample(x, y, B_BAND)); //B
-//					dstOut.setSample(x, y, R_BAND, 255); //R
-//					dstOut.setSample(x, y, G_BAND, 0); //G
-//					dstOut.setSample(x, y, B_BAND, 0); //B
 				}
 			}
 		}

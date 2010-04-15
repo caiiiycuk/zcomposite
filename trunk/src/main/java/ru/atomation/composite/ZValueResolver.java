@@ -1,5 +1,7 @@
 package ru.atomation.composite;
 
+import java.awt.Shape;
+
 /**
  * Converts given x, y coordinate to z coordinate
  * @author caiiiycuk
@@ -23,5 +25,10 @@ public interface ZValueResolver {
 	 * @param isEnabled enable or disable antialias
 	 */
 	void setAntialiasingEnabled(boolean isEnabled);
+	
+	/**
+	 * @param shape for clipping, important when use antialiasing
+	 */
+	void setClippingShape(Shape shape);
 	
 }

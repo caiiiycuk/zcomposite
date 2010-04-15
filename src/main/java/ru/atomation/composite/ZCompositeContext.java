@@ -24,20 +24,22 @@ public class ZCompositeContext implements CompositeContext {
 	 * {@inheritDoc}
 	 */
 	public void compose(Raster src, Raster dstIn, WritableRaster dstOut) {
-		if (zComposite.getValueResolver() == null) {
+		ZValueResolver zValueResolver = zComposite.getValueResolver();
+		
+		if (zValueResolver == null) {
 			throw new IllegalArgumentException("You must set a ZValueResolver before draw any polygon with this composite");
 		}
 		
 		int maxX = dstOut.getMinX() + dstOut.getWidth();
 		int maxY = dstOut.getMinY() + dstOut.getHeight();
-		
+
 		for (int y = dstOut.getMinY(); y < maxY; y++) {
 			for (int x = dstOut.getMinX(); x < maxX; x++) {
 				int dstInX = -dstIn.getSampleModelTranslateX() + x;
 				int dstInY = -dstIn.getSampleModelTranslateY() + y;
 				
 				double dstZ = zComposite.getZOf(dstInX, dstInY);
-				double srcZ = zComposite.getValueResolver().resolve(dstInX, dstInY);
+				double srcZ = zValueResolver.resolve(dstInX, dstInY);
 
 				if (srcZ < dstZ) {
 					zComposite.setZOf(dstInX, dstInY, srcZ);

@@ -6,20 +6,18 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.GeneralPath;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import ru.atomation.composite.ZComposite;
-import ru.atomation.composite.ZPlaneResolver;
+import ru.atomation.composite.misc.ZCompositeUtils;
 
 /**
  * Shows how to use zbuffer composite
  * @author caiiiycuk
  *
  */
-public class ZBufferComposite {
+public class ZCompositeSnippet {
 
 	/**
 	 * @param args
@@ -31,56 +29,45 @@ public class ZBufferComposite {
 			private static final long serialVersionUID = 1959924209249841311L;
 
 			protected void paintComponent(Graphics g) {
+				int[] xpoints;
+				int[] ypoints;
+				
 				Graphics2D g2d = (Graphics2D) g;
 				ZComposite composite = new ZComposite(640, 480);
-
+				composite.setAntialiasingEnabled(true);
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				g2d.setComposite(composite);
 				
-
-				final GeneralPath generalPath = new GeneralPath();
-				generalPath.moveTo(0, 0);
-				generalPath.lineTo(100, 50);
-				generalPath.lineTo(100, 100);
-				generalPath.lineTo(0, 50);
-				generalPath.closePath();
+				xpoints = new int[] {
+					0, 100, 100, 0
+				};
 				
-				composite.setValueResolver(new ZPlaneResolver(0, 100, 100, 0, 50, 100, 100, 0, 0) {
-					public double resolve(double x, double y) {
-						if (generalPath.contains(x, y)) {
-							return super.resolve(x, y);
-						}
-						
-						return Double.MAX_VALUE;
-					}
-				});
+				ypoints = new int[] {
+					0, 50, 100, 50
+				};
+				
+				composite.setValueResolver(ZCompositeUtils.zForPolygonResolver(xpoints, ypoints, 100, 0, 0));
 				
 				g2d.setColor(Color.red);
-				g2d.fill(generalPath);
+				g2d.fillPolygon(xpoints, ypoints, xpoints.length);
 				g2d.setColor(Color.yellow);
-				g2d.draw(generalPath);
+				g2d.drawPolygon(xpoints, ypoints, xpoints.length);
 				
+				
+				xpoints = new int[] {
+					0, 100, 100, 0
+				};
+					
+				ypoints = new int[] {
+					50, 0, 50, 100
+				};
+				
+				composite.setValueResolver(ZCompositeUtils.zForPolygonResolver(xpoints, ypoints, 0, 100, 100));
 
-				final GeneralPath generalPath2 = new GeneralPath();
-				generalPath2.moveTo(0, 50);
-				generalPath2.lineTo(100, 0);
-				generalPath2.lineTo(100, 50);
-				generalPath2.lineTo(0, 100);
-				generalPath2.closePath();
-
-				composite.setValueResolver(new ZPlaneResolver(0, 100, 100, 50, 0, 50, 0, 100, 100) {
-					public double resolve(double x, double y) {
-						if (generalPath2.contains(x, y)) {
-							return super.resolve(x, y);
-						}
-						
-						return Double.MAX_VALUE;
-					}
-				});
 				g2d.setColor(Color.yellow);
-				g2d.fill(generalPath2);
+				g2d.fillPolygon(xpoints, ypoints, xpoints.length);
 				g2d.setColor(Color.red);
-				g2d.draw(generalPath2);
+				g2d.drawPolygon(xpoints, ypoints, xpoints.length);
 			}
 		};
 		

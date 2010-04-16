@@ -22,16 +22,22 @@ public class ZComposite implements Composite {
 	protected boolean antialiasingEnabled;
 	
 	public ZComposite(int width, int height) {
-		buffer = new double[height * width];
+		this.antialiasingEnabled = false;
+		this.width = width +1; //
+		setSize(width, height);
+	}
+	
+	public void setSize(int newWidth, int newHeight) {
+		if (newWidth == width && newHeight == height) {
+			return;
+		}
 		
+		this.width = newWidth;
+		this.height = newHeight;
+		
+		buffer = new double[height * width];
 		clearBuffer = new double[height * width];
 		Arrays.fill(clearBuffer, Double.MAX_VALUE);
-
-		this.antialiasingEnabled = false;
-		this.width = width;
-		this.height = height;
-		
-		clearBufferBit();
 	}
 	
 	/**
@@ -58,7 +64,7 @@ public class ZComposite implements Composite {
 	public void setZOf(int x, int y, double value) {
 		if (x >= width || x < 0 ||
 			y >= height || y < 0) {
-			throw new IllegalArgumentException("Point [" + x + ", " + y + "] is outside of the Z Buffer array");
+			throw new IllegalArgumentException("Point [" + x + ", " + y + "] is outside of the Z Buffer array ["+width+", "+height+"]");
 		}
 		
 		buffer[y*width + x] = value;
@@ -89,8 +95,13 @@ public class ZComposite implements Composite {
 		return valueResolver;
 	}
 
-	public double getZOf(int realX, int realY) {
-		return buffer[realY*width + realX];
+	public double getZOf(int x, int y) {
+		if (x >= width || x < 0 ||
+				y >= height || y < 0) {
+				throw new IllegalArgumentException("Point [" + x + ", " + y + "] is outside of the Z Buffer array ["+width+", "+height+"]");
+		}
+		
+		return buffer[y*width + x];
 	}
 
 	/**

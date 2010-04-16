@@ -15,6 +15,9 @@ public class ZPlaneResolver implements ZValueResolver {
 	protected boolean antialiasingEnabled;
 	protected Shape clippingShape;
 	
+	public ZPlaneResolver() {
+	}
+	
 	/**
 	 * Create {@link ZValueResolver} based on plane (3 points defenitaion)
 	 * @param x1 coordinate

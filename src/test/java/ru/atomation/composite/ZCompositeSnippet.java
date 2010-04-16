@@ -34,9 +34,11 @@ public class ZCompositeSnippet {
 				
 				Graphics2D g2d = (Graphics2D) g;
 				ZComposite composite = new ZComposite(640, 480);
+				composite.clearBufferBit();
 				composite.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				g2d.setComposite(composite);
+				
 				
 				xpoints = new int[] {
 					0, 100, 100, 0

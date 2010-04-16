@@ -53,6 +53,26 @@ public class ZValueResolverFactory {
 		generalPath.closePath();
 		return generalPath;
 	}
+	
+	/**
+	 * Create polygon clipping shape
+	 * @param xpoints
+	 * @param ypoints
+	 * @return
+	 */
+	public static GeneralPath createClippingShape(final double[] xpoints,	final double[] ypoints) {
+		if (xpoints.length < 3) {
+			throw new IllegalArgumentException("Polygon must have >2 points");
+		}
+		
+		GeneralPath generalPath = new GeneralPath();
+		generalPath.moveTo(xpoints[0], ypoints[0]);
+		for (int i=1; i<xpoints.length; i++) {
+			generalPath.lineTo(xpoints[i], ypoints[i]);
+		}
+		generalPath.closePath();
+		return generalPath;
+	}
 
 //--
 	
@@ -101,6 +121,10 @@ public class ZValueResolverFactory {
 	 * @return z-координата (z = -(Ax + By + D) / C
 	 */
 	public static double resolveZ(double x, double y, double[] plane) {
+		if (plane[2] == 0) {
+			return Double.MAX_VALUE;
+		}
+		
 		return - (plane[0] * x + plane[1] * y + plane[3]) / plane[2];
 	}
 	

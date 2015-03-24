@@ -1,5 +1,5 @@
 # zcomposite
-Emulate z-buffer in java Graphics 2d.
+Emulates z-buffer in java Graphics 2D.
 
 
 | Without ZComposite | With ZComposite |
